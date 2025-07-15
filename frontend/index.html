@@ -1,0 +1,57 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Form</title>
+  <link rel="stylesheet" href="custom.css" />
+</head>
+<body>
+  <header>
+    <h1>Student Information</h1>
+  </header>
+
+  <main>
+    <div class="form-container">
+      <form id="studentForm">
+        <input type="text" id="name" placeholder="Name" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="date" id="dob" required />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- ✅ Your JavaScript code goes here -->
+  <script>
+    document.getElementById("studentForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const dob = document.getElementById("dob").value;
+
+      const student = { name, email, dob };
+
+      try {
+        const response = await fetch("http://localhost:5000/students", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(student),
+        });
+
+        if (response.ok) {
+          alert("Student added successfully!");
+          document.getElementById("studentForm").reset();
+        } else {
+          alert("Failed to add student.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Error connecting to server.");
+      }
+    });
+  </script>
+</body>
+</html>
